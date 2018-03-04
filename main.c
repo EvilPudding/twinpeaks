@@ -33,9 +33,6 @@ int main(int argc, char **argv)
 	mesh_scale_uv(cloth, 10);
 	mesh_scale_uv(cube, 10);
 
-	entity_signal(entity_null, window_resize,
-			&(window_resize_data){window_width, window_height});
-
 	entity_t light = entity_new( c_name_new("light"),
 			c_node_new(),
 			c_light_new(1.3, vec4(1.0, 1.0, 0.4, 1.0), 512)
