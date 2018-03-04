@@ -24,13 +24,13 @@ CFLAGS_DEB = $(CFLAGS) -g3
 
 ##############################################################################
 
-all: update_lib init $(DIR)/shift
+all: update_lib init $(DIR)/twin_peaks
 	cp -rvu resauces $(DIR)
 
 update_lib:
 	rm -f candle/build/candle.a
 
-$(DIR)/shift: candle/build/candle.a $(OBJS_REL) 
+$(DIR)/twin_peaks: candle/build/candle.a $(OBJS_REL) 
 	$(LD) -o $@ $(OBJS_REL) $(LIBS_REL)
 
 candle/build/candle.a:
@@ -41,13 +41,13 @@ $(DIR)/%.o: %.c
 
 ##############################################################################
 
-debug: update_lib_deb init $(DIR)/shift_debug
+debug: update_lib_deb init $(DIR)/twin_peaks_debug
 	cp -rvu resauces $(DIR)
 
 update_lib_deb:
 	rm -f candle/build/candle_debug.a
 
-$(DIR)/shift_debug: candle/build/candle_debug.a $(OBJS_DEB)
+$(DIR)/twin_peaks_debug: candle/build/candle_debug.a $(OBJS_DEB)
 	$(LD) -o $@ $(OBJS_DEB) $(LIBS_DEB)
 
 candle/build/candle_debug.a:
@@ -66,15 +66,15 @@ init:
 
 run: all
 	cp -rvu resauces $(DIR)
-	$(DIR)/shift 6
+	$(DIR)/twin_peaks
 
 gdb: debug
 	cp -rvu resauces $(DIR)
-	gdb $(DIR)/shift_debug
+	gdb $(DIR)/twin_peaks_debug
 
 valgrind: debug
 	cp -rvu resauces $(DIR)
-	valgrind --log-fd=1 --suppressions=val_sup $(DIR)/shift_debug | tee val_log | less
+	valgrind --log-fd=1 --suppressions=val_sup $(DIR)/twin_peaks_debug | tee val_log | less
 		
 clean:
 	rm -r $(DIR)
