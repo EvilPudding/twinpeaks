@@ -5,8 +5,6 @@ int main(int argc, char **argv)
 {
 	/* bl(); exit(1); */
 
-	entity_t model;
-
 	candle = candle_new(0);
 
 	/* entity_add_component(candle->systems, (c_t*)c_renderer_new(1.0f, 0, 0, 1.0f)); */
@@ -17,12 +15,13 @@ int main(int argc, char **argv)
 	/* SKY */
 	mesh_t *cube = sauces_mesh("floor.obj");
 	mesh_t *cloth = sauces_mesh("cloth.obj");
-	entity_new( c_model_new(cube, sauces_mat("pack2/tile"), 1));
 
-	entity_new( c_model_new(cloth, sauces_mat("pack2/velvet"), 1));
-	entity_t c1 = entity_new( c_model_new(cloth, sauces_mat("pack2/velvet"), 1));
-	entity_t c2 = entity_new( c_model_new(cloth, sauces_mat("pack2/velvet"), 1));
-	entity_t c3 = entity_new( c_model_new(cloth, sauces_mat("pack2/velvet"), 1));
+	entity_new(c_model_new(cube, sauces_mat("pack2/tile"), 1));
+
+	entity_new(c_model_new(cloth, sauces_mat("pack2/velvet"), 1));
+	entity_t c1 = entity_new(c_model_new(cloth, sauces_mat("pack2/velvet"), 1));
+	entity_t c2 = entity_new(c_model_new(cloth, sauces_mat("pack2/velvet"), 1));
+	entity_t c3 = entity_new(c_model_new(cloth, sauces_mat("pack2/velvet"), 1));
 
 	sauces_mat("pack2/tile")->normal.texture_blend = 0.3;
 
@@ -30,7 +29,6 @@ int main(int argc, char **argv)
 	c_spacial_rotate_Y(c_spacial(&c2), M_PI);
 	c_spacial_rotate_Y(c_spacial(&c3), 3 * M_PI / 2);
 
-	mesh_scale_uv(cloth, 10);
 	mesh_scale_uv(cube, 10);
 
 	entity_t light = entity_new( c_name_new("light"),
