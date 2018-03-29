@@ -15,14 +15,10 @@
 
 int main(int argc, char **argv)
 {
-	/* bl(); exit(1); */
-
-	/* entity_add_component(candle->systems, (c_t*)c_renderer_new(1.0f, 0, 0, 1.0f)); */
 	entity_add_component(candle->systems, (c_t*)c_renderer_new(1.0f, 1, 1, 1));
 	entity_add_component(candle->systems, (c_t*)c_editmode_new());
 	c_editmode_activate(c_editmode(&candle->systems));
 
-	/* SKY */
 	mesh_t *cube = sauces_mesh("floor.obj");
 	mesh_t *cloth = sauces_mesh("cloth.obj");
 
@@ -55,7 +51,6 @@ int main(int argc, char **argv)
 			c_model_new(sauces_mesh("venus.obj"), sauces_mat("pack1/stone3"), 1)
 	);
 	c_spacial_set_pos(c_spacial(&venus), vec3(0, 0, 0));
-
 
 
 	candle_wait(candle);
