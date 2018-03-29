@@ -1,11 +1,21 @@
 #include <candle.h>
 #include <stdio.h>
+#include <components/node.h>
+#include <components/force.h>
+#include <components/name.h>
+#include <components/camera.h>
+#include <components/ambient.h>
+#include <components/decal.h>
+#include <components/sprite.h>
+#include <components/light.h>
+#include <components/model.h>
+#include <systems/renderer.h>
+#include <systems/editmode.h>
+
 
 int main(int argc, char **argv)
 {
 	/* bl(); exit(1); */
-
-	candle = candle_new(0);
 
 	/* entity_add_component(candle->systems, (c_t*)c_renderer_new(1.0f, 0, 0, 1.0f)); */
 	entity_add_component(candle->systems, (c_t*)c_renderer_new(1.0f, 1, 1, 1));
@@ -33,7 +43,7 @@ int main(int argc, char **argv)
 
 	entity_t light = entity_new( c_name_new("light"),
 			c_node_new(),
-			c_light_new(1.3, vec4(1.0, 1.0, 0.4, 1.0), 512)
+			c_light_new(1.3, 30.0f, vec4(1.0, 1.0, 0.9, 1.0), 512)
 	);
 	c_spacial_set_pos(c_spacial(&light), vec3(2.0, 2.0, 2.0));
 
