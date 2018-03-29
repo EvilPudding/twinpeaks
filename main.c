@@ -52,6 +52,14 @@ int main(int argc, char **argv)
 	);
 	c_spacial_set_pos(c_spacial(&venus), vec3(0, 0, 0));
 
+	entity_t decal = entity_new(c_decal_new(sauces_mat("pack1/piramids")));
+	c_spacial_set_pos(c_spacial(&decal), vec3(1, 0, 1));
+	c_spacial_rotate_Y(c_spacial(&decal), M_PI / 5);
+	c_spacial_rotate_X(c_spacial(&decal), -M_PI / 2);
+
+	entity_t sprite = entity_new(c_sprite_new(sauces_mat("pack1/stone3"), 0));
+	c_spacial_set_pos(c_spacial(&sprite), vec3(0, 2, 2));
+
 
 	candle_wait(candle);
 
