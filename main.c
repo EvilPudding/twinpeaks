@@ -12,24 +12,46 @@
 #include <systems/renderer.h>
 #include <systems/editmode.h>
 
+entity_t load_model(entity_t root, int argc, char **argv)
+{
+	if(argc <= 1) return entity_null;
+
+	float scale = 1.0f;
+	if(argc >= 2)
+	{
+		if(sscanf(argv[2], "%f", &scale) == -1) scale = 1.0f;
+	}
+	entity_t ent = c_editmode(&SYS)->selected;
+	/* ent = sauces_model("toyota_ae86_drift", 1.0f); */
+	/* ent = sauces_model("cubes", 1.0f); */
+	/* ent = sauces_model("ass", 1.0f); */
+	sauces_model(&ent, argv[1], scale);
+	return ent;
+}
 
 int main(int argc, char **argv)
 {
-	entity_add_component(SYS, (c_t*)c_renderer_new(0.66f, 1, 1, 1));
+	entity_add_component(SYS, (c_t*)c_renderer_new(1.0f, 0, 0, 1));
 	entity_add_component(SYS, (c_t*)c_editmode_new());
 	c_editmode_activate(c_editmode(&SYS));
 
-	mesh_t *cube = sauces_mesh("floor.obj");
-	mesh_t *cloth = sauces_mesh("cloth.obj");
+	c_sauces_index_dir(c_sauces(&SYS), "resauces");
 
-	entity_new(c_model_new(cube, sauces_mat("pack2/tile"), 1, 1));
+	mesh_t *cube = sauces_mesh("floor");
+	mesh_t *cloth = sauces_mesh("cloth");
 
-	entity_new(c_model_new(cloth, sauces_mat("pack2/velvet"), 1, 1));
-	entity_t c1 = entity_new(c_model_new(cloth, sauces_mat("pack2/velvet"), 1, 1));
-	entity_t c2 = entity_new(c_model_new(cloth, sauces_mat("pack2/velvet"), 1, 1));
-	entity_t c3 = entity_new(c_model_new(cloth, sauces_mat("pack2/velvet"), 1, 1));
+	entity_new(c_model_new(cube, sauces_mat("tile"), 1, 1));
 
-	sauces_mat("pack2/tile")->normal.texture_blend = 0.3;
+	entity_t c0 = entity_new(c_model_new(cloth, sauces_mat("velvet"), 1, 1));
+	entity_t c1 = entity_new(c_model_new(cloth, sauces_mat("velvet"), 1, 1));
+	entity_t c2 = entity_new(c_model_new(cloth, sauces_mat("velvet"), 1, 1));
+	entity_t c3 = entity_new(c_model_new(cloth, sauces_mat("velvet"), 1, 1));
+	c_model_smooth(c_model(&c0), 0, 1);
+	c_model_smooth(c_model(&c1), 0, 1);
+	c_model_smooth(c_model(&c2), 0, 1);
+	c_model_smooth(c_model(&c3), 0, 1);
+
+	sauces_mat("tile")->normal.texture_blend = 0.3;
 
 	c_spacial_rotate_Y(c_spacial(&c1), M_PI / 2);
 	c_spacial_rotate_Y(c_spacial(&c2), M_PI);
@@ -38,28 +60,25 @@ int main(int argc, char **argv)
 	mesh_scale_uv(cube, 10);
 
 	entity_t light = entity_new( c_name_new("light"),
-			c_node_new(),
 			c_light_new(30.0f, vec4(1.0, 1.0, 0.9, 1.0), 512)
 	);
 	c_spacial_set_pos(c_spacial(&light), vec3(2.0, 2.0, 2.0));
 
-	entity_t ambient = entity_new(c_ambient_new(64));
-	c_spacial_set_pos(c_spacial(&ambient), vec3(0, 1, 0));
-
 	entity_t venus = entity_new(
 			c_name_new("venus"),
-			c_model_new(sauces_mesh("venus.obj"), sauces_mat("pack1/stone3"), 1, 1)
+			c_model_new(sauces_mesh("venus"), sauces_mat("stone3"), 1, 1)
 	);
 	c_spacial_set_pos(c_spacial(&venus), vec3(0, 0, 0));
 
-	/* entity_t decal = entity_new(c_decal_new(sauces_mat("pack1/piramids"))); */
+	/* entity_t decal = entity_new(c_decal_new(sauces_mat("piramids"))); */
 	/* c_spacial_set_pos(c_spacial(&decal), vec3(1, 0, 1)); */
 	/* c_spacial_rotate_Y(c_spacial(&decal), M_PI / 5); */
 	/* c_spacial_rotate_X(c_spacial(&decal), -M_PI / 2); */
 
-	/* entity_t sprite = entity_new(c_sprite_new(sauces_mat("pack1/stone3"), 0)); */
-	/* c_spacial_set_pos(c_spacial(&sprite), vec3(0, 2, 2)); */
+	entity_t sprite = entity_new(c_sprite_new(sauces_mat("stone3"), 0));
+	c_spacial_set_pos(c_spacial(&sprite), vec3(0, 2, 2));
 
+	candle_reg_cmd("load", (cmd_cb)load_model);
 
 	candle_wait();
 

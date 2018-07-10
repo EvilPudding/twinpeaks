@@ -1,6 +1,8 @@
 CC = cc
 LD = cc
 
+PLUGINS = candle
+
 DIR = build
 
 LIBS = -Lcandle/build $(shell sdl2-config --libs) -lglut -lGLU -lm -lGL -lGLEW \
@@ -11,9 +13,11 @@ SRCS = $(wildcard *.c) $(wildcard components/*.c) $(wildcard systems/*.c)
 OBJS_REL = $(patsubst %.c, $(DIR)/%.o, $(SRCS))
 OBJS_DEB = $(patsubst %.c, $(DIR)/%.debug.o, $(SRCS))
 
-LIBS_REL = $(LIBS) candle/build/candle.a
+PLUGINS_REL = $(patsubst %, %/build/export.a, $(PLUGINS))
+PLUGINS_DEB = $(patsubst %, %/build/export_debug.a, $(PLUGINS))
 
-LIBS_DEB = $(LIBS) candle/build/candle_debug.a
+LIBS_REL = $(LIBS) $(PLUGINS_REL)
+LIBS_DEB = $(LIBS) $(PLUGINS_DEB)
 
 CFLAGS = -Wall -I. -Icandle -DUSE_VAO \
 		 $(shell sdl2-config --cflags)
@@ -22,36 +26,30 @@ CFLAGS_REL = $(CFLAGS) -O2
 
 CFLAGS_DEB = $(CFLAGS) -g3
 
-##############################################################################
 
-all: update_lib init $(DIR)/twin_peaks
+all: init $(DIR)/twin_peaks
+	rm $(PLUGINS_REL)
 	cp -rvu resauces $(DIR)
 
-update_lib:
-	rm -f candle/build/candle.a
-
-$(DIR)/twin_peaks: candle/build/candle.a $(OBJS_REL) 
+$(DIR)/twin_peaks: $(OBJS_REL) $(PLUGINS_REL)
 	$(LD) -o $@ $(OBJS_REL) $(LIBS_REL)
 
-candle/build/candle.a:
-	$(MAKE) -C candle PARENTCFLAGS=
+%/build/export.a:
+	$(MAKE) -C $(patsubst %/build/export.a, %, $@) PARENTCFLAGS=
 
 $(DIR)/%.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS_REL)
 
 ##############################################################################
 
-debug: update_lib_deb init $(DIR)/twin_peaks_debug
+debug: init $(DIR)/twin_peaks_debug
 	cp -rvu resauces $(DIR)
 
-update_lib_deb:
-	rm -f candle/build/candle_debug.a
-
-$(DIR)/twin_peaks_debug: candle/build/candle_debug.a $(OBJS_DEB)
+$(DIR)/twin_peaks_debug: $(OBJS_DEB) $(PLUGINS_DEB)
 	$(LD) -o $@ $(OBJS_DEB) $(LIBS_DEB)
 
-candle/build/candle_debug.a:
-	$(MAKE) -C candle debug PARENTCFLAGS=
+%/build/export_debug.a:
+	$(MAKE) -C $(patsubst %/build/export_debug.a, %, $@) debug PARENTCFLAGS=
 
 $(DIR)/%.debug.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS_DEB)

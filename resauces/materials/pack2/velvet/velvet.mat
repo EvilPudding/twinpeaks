@@ -1,3 +1,3 @@
-diffuse diffuse
-normal #8080FF normal*0.4
-specular #11111111
+albedo velvet_diffuse
+normal #8080FF velvet_normal*0.4
+roughness #aaaaaaaa
