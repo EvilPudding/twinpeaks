@@ -1,34 +1,11 @@
 #include <candle.h>
 #include <stdio.h>
-#include <components/node.h>
 #include <components/name.h>
-#include <components/camera.h>
-#include <components/ambient.h>
 #include <components/decal.h>
 #include <components/sprite.h>
 #include <components/light.h>
 #include <components/model.h>
-#include <utils/renderer.h>
 #include <systems/editmode.h>
-
-entity_t load_model(entity_t root, int argc, char **argv)
-{
-	if(argc <= 1) return entity_null;
-
-	float scale = 1.0f;
-	if(argc >= 2)
-	{
-		if(sscanf(argv[2], "%f", &scale) == -1) scale = 1.0f;
-	}
-	entity_t ent = c_editmode(&SYS)->selected;
-	/* ent = sauces_model("toyota_ae86_drift", 1.0f); */
-	/* ent = sauces_model("cubes", 1.0f); */
-	/* ent = sauces_model("ass", 1.0f); */
-	/* sauces_model(&ent, argv[1], scale); */
-	struct load_signal ev = {argv[1], scale};
-	entity_signal(entity_null, ref("load"), &ev, &ent);
-	return ent;
-}
 
 int main(int argc, char **argv)
 {
@@ -77,8 +54,6 @@ int main(int argc, char **argv)
 
 	entity_t sprite = entity_new(c_sprite_new(sauces("stone3"), 0));
 	c_spacial_set_pos(c_spacial(&sprite), vec3(0, 2, 2));
-
-	candle_reg_cmd("load", (cmd_cb)load_model);
 
 	candle_wait();
 
