@@ -1,14 +1,13 @@
 CC = cc
 LD = cc
 
-PLUGINS = candle
+PLUGINS = $(wildcard *.candle) candle
 
 DIR = build
 
-LIBS = -Lcandle/build $(shell sdl2-config --libs) -lglut -lGLU -lm -lGL -lGLEW \
-	   -lpng -lassimp -llua
+LIBS = 
 
-SRCS = $(wildcard *.c) $(wildcard components/*.c) $(wildcard systems/*.c)
+SRCS = $(wildcard *.c)
 
 OBJS_REL = $(patsubst %.c, $(DIR)/%.o, $(SRCS))
 OBJS_DEB = $(patsubst %.c, $(DIR)/%.debug.o, $(SRCS))
@@ -22,20 +21,21 @@ LIBS_DEB = $(LIBS) $(PLUGINS_DEB)
 CFLAGS = -Wall -I. -Icandle -DUSE_VAO \
 		 $(shell sdl2-config --cflags)
 
-CFLAGS_REL = $(CFLAGS) -O2
+CFLAGS_REL = $(CFLAGS) -O3
 
-CFLAGS_DEB = $(CFLAGS) -g3
+CFLAGS_DEB = $(CFLAGS) -g3 -DDEBUG
 
 
 all: init $(DIR)/twin_peaks
-	rm $(PLUGINS_REL)
 	cp -rvu resauces $(DIR)
 
 $(DIR)/twin_peaks: $(OBJS_REL) $(PLUGINS_REL)
-	$(LD) -o $@ $(OBJS_REL) $(LIBS_REL)
+	$(LD) -o $@ $(OBJS_REL) $(LIBS_REL) $(shell cat $(DIR)/deps)
 
 %/build/export.a:
-	$(MAKE) -C $(patsubst %/build/export.a, %, $@) PARENTCFLAGS=
+	$(MAKE) -C $(patsubst %/build/export.a, %, $@)
+	echo " " >> $(DIR)/deps
+	-cat $(patsubst %/build/export.a, %/build/deps, $@) >> $(DIR)/deps
 
 $(DIR)/%.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS_REL)
@@ -43,13 +43,16 @@ $(DIR)/%.o: %.c
 ##############################################################################
 
 debug: init $(DIR)/twin_peaks_debug
+	rm $(PLUGINS_DEB)
 	cp -rvu resauces $(DIR)
 
 $(DIR)/twin_peaks_debug: $(OBJS_DEB) $(PLUGINS_DEB)
-	$(LD) -o $@ $(OBJS_DEB) $(LIBS_DEB)
+	$(LD) -o $@ $(OBJS_DEB) $(LIBS_DEB) $(shell cat $(DIR)/deps)
 
 %/build/export_debug.a:
-	$(MAKE) -C $(patsubst %/build/export_debug.a, %, $@) debug PARENTCFLAGS=
+	$(MAKE) -C $(patsubst %/build/export_debug.a, %, $@) debug
+	echo " " >> $(DIR)/deps
+	-cat $(patsubst %/build/export_debug.a, %/build/deps, $@) >> $(DIR)/deps
 
 $(DIR)/%.debug.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS_DEB)
@@ -59,6 +62,10 @@ $(DIR)/%.debug.o: %.c
 init:
 	mkdir -p $(DIR)
 	mkdir -p $(DIR)/components
+	rm -f $(DIR)/deps
+	touch $(DIR)/deps
+	rm -f $(PLUGINS_REL)
+	rm -f $(PLUGINS_DEB)
 
 ##############################################################################
 
@@ -72,7 +79,7 @@ gdb: debug
 
 valgrind: debug
 	cp -rvu resauces $(DIR)
-	valgrind --log-fd=1 --suppressions=val_sup $(DIR)/twin_peaks_debug | tee val_log | less
+	valgrind --log-fd=1 --suppressions=val_sup $(DIR)/twin_peaks_debug 10 | tee val_log | less
 		
 clean:
 	rm -r $(DIR)
