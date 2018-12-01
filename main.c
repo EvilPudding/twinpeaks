@@ -30,30 +30,30 @@ int main(int argc, char **argv)
 
 	((mat_t*)sauces("tile"))->normal.blend = 0.3;
 
-	c_spacial_rotate_Y(c_spacial(&c1), M_PI / 2);
-	c_spacial_rotate_Y(c_spacial(&c2), M_PI);
-	c_spacial_rotate_Y(c_spacial(&c3), 3 * M_PI / 2);
+	c_spatial_rotate_Y(c_spatial(&c1), M_PI / 2);
+	c_spatial_rotate_Y(c_spatial(&c2), M_PI);
+	c_spatial_rotate_Y(c_spatial(&c3), 3 * M_PI / 2);
 
 	mesh_scale_uv(cube, 10);
 
 	entity_t light = entity_new( c_name_new("light"),
 			c_light_new(30.0f, vec4(1.0, 1.0, 0.9, 1.0), 512)
 	);
-	c_spacial_set_pos(c_spacial(&light), vec3(2.0, 2.0, 2.0));
+	c_spatial_set_pos(c_spatial(&light), vec3(2.0, 2.0, 2.0));
 
 	entity_t venus = entity_new(
 			c_name_new("venus"),
 			c_model_new(sauces("venus"), sauces("stone3"), 1, 1)
 	);
-	c_spacial_set_pos(c_spacial(&venus), vec3(0, 0, 0));
+	c_spatial_set_pos(c_spatial(&venus), vec3(0, 0, 0));
 
 	/* entity_t decal = entity_new(c_decal_new(sauces("piramids"))); */
-	/* c_spacial_set_pos(c_spacial(&decal), vec3(1, 0, 1)); */
-	/* c_spacial_rotate_Y(c_spacial(&decal), M_PI / 5); */
-	/* c_spacial_rotate_X(c_spacial(&decal), -M_PI / 2); */
+	/* c_spatial_set_pos(c_spatial(&decal), vec3(1, 0, 1)); */
+	/* c_spatial_rotate_Y(c_spatial(&decal), M_PI / 5); */
+	/* c_spatial_rotate_X(c_spatial(&decal), -M_PI / 2); */
 
 	entity_t sprite = entity_new(c_sprite_new(sauces("stone3"), 0));
-	c_spacial_set_pos(c_spacial(&sprite), vec3(0, 2, 2));
+	c_spatial_set_pos(c_spatial(&sprite), vec3(0, 2, 2));
 
 	candle_wait();
 
