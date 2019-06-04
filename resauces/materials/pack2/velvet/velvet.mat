@@ -1,3 +1,7 @@
-albedo velvet_diffuse
-normal #8080FF velvet_normal*0.4
-roughness #aaaaaaaa
+material _default 100.000000 10.000000 ff323232 1 1 0 0 0 -1
+material.albedo.texture = velvet_diffuse
+material.albedo.blend = 1.000000
+material.roughness.value = 0.360000
+material.metalness.value = 0.800000
+material.normal.texture = velvet_normal
+material.normal.blend = 1.000000
