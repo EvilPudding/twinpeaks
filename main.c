@@ -41,12 +41,12 @@ int main(int argc, char **argv)
 	mesh_scale_uv(cube, 10);
 
 	entity_t light = entity_new( c_name_new("light"),
-			c_light_new(30.0f, vec4(3.5, 3.5, 3.3, 1.0), 512)
+			c_light_new(30.0f, vec4(0.9, 0.9, 0.8, 1.0), 512)
 	);
 	c_spatial_set_pos(c_spatial(&light), vec3(2.0, 8.0, 2.0));
 
 	entity_t ambient = entity_new( c_name_new("light"),
-			c_light_new(-1.0f, vec4(0.2, 0.2, 0.3, 1.0), 512)
+			c_light_new(-1.0f, vec4(0.1, 0.1, 0.2, 1.0), 512)
 	);
 	c_spatial_set_pos(c_spatial(&ambient), vec3(2.0, 10.0, 2.0));
 
