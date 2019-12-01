@@ -56,8 +56,6 @@ int main(int argc, char **argv)
 	mat1t(stone, ref("roughness.texture"), sauces("rough.png"));
 	mat1f(stone, ref("roughness.blend"), 0.9f);
 	mat1f(stone, ref("metalness.value"), 0.95f);
-	/* /1* bok->albedo.texture = sauces("earth_16k.jpg"); *1/ */
-	/* bok->albedo.blend = 1; */
 	entity_t venus = entity_new(
 			c_name_new("venus"),
 			c_model_new(sauces("venus.obj"), stone, true, true)
