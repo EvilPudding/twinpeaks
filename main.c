@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 
 	c_spatial_t *cam = c_spatial(&c_editmode(&SYS)->camera);
 	c_spatial_set_pos(cam, vec3(0.0f, 3.0f, 6.0f));
-	c_spatial_set_rot(cam, 0.0f, 1.0f, 0.0f, M_PI / 2.0f);
+	c_spatial_rotate_Y(cam, -M_PI / 2.0f);
 
 	c_sauces_index_dir(c_sauces(&SYS), "resauces");
 
