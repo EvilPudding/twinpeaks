@@ -9,6 +9,8 @@
 
 int main(int argc, char **argv)
 {
+	candle_init();
+
 	entity_add_component(SYS, (c_t*)c_editmode_new());
 	c_editmode_activate(c_editmode(&SYS));
 
@@ -40,14 +42,16 @@ int main(int argc, char **argv)
 
 	mesh_scale_uv(cube, 10);
 
-	entity_t light = entity_new( c_name_new("light"),
-			c_light_new(30.0f, vec4(0.9, 0.9, 0.8, 1.0), 512)
-	);
+	entity_t light = entity_new({
+		c_name_new("light");
+		c_light_new(30.0f, vec4(0.9, 0.9, 0.8, 1.0));
+	});
 	c_spatial_set_pos(c_spatial(&light), vec3(2.0, 8.0, 2.0));
 
-	entity_t ambient = entity_new( c_name_new("light"),
-			c_light_new(-1.0f, vec4(0.1, 0.1, 0.2, 1.0), 512)
-	);
+	entity_t ambient = entity_new({
+		c_name_new("light");
+		c_light_new(-1.0f, vec4(0.1, 0.1, 0.2, 1.0));
+	});
 	c_spatial_set_pos(c_spatial(&ambient), vec3(2.0, 10.0, 2.0));
 
 	mat_t *stone = mat_new("stone", "default");
@@ -56,10 +60,10 @@ int main(int argc, char **argv)
 	mat1t(stone, ref("roughness.texture"), sauces("rough.png"));
 	mat1f(stone, ref("roughness.blend"), 0.9f);
 	mat1f(stone, ref("metalness.value"), 0.95f);
-	entity_t venus = entity_new(
-			c_name_new("venus"),
-			c_model_new(sauces("venus.obj"), stone, true, true)
-	);
+	entity_t venus = entity_new({
+		c_name_new("venus");
+		c_model_new(sauces("venus.obj"), stone, true, true);
+	});
 	c_spatial_scale(c_spatial(&venus), vec3(1.3f, 1.3f, 1.3));
 
 	candle_wait();

@@ -9,7 +9,7 @@ LIBS = -Wl,-rpath=$(DIR) -L$(DIR)
 
 SRCS = $(wildcard *.c) $(wildcard components/*.c) $(wildcard systems/*.c)
 
-RES = resauces default.vil transparent.vil
+RES = resauces *.vil
 
 OBJS_REL = $(patsubst %.c, $(DIR)/%.o, $(SRCS))
 OBJS_DEB = $(patsubst %.c, $(DIR)/%.debug.o, $(SRCS))
@@ -24,7 +24,7 @@ EMS_OPTS = -s USE_SDL=2 -s ALLOW_MEMORY_GROWTH=1 -s USE_WEBGL2=1 \
 		   -s EMULATE_FUNCTION_POINTER_CASTS=1 \
 		   -s WASM=1
 
-CFLAGS = -Wall -I. -Icandle -DUSE_VAO \
+CFLAGS = -Wall -I. -Icandle -DUSE_VAO -Wno-unused-function \
 		 $(shell sdl2-config --cflags)
 
 CFLAGS_REL = $(CFLAGS) -O3
@@ -88,7 +88,13 @@ emscripten: init $(DIR)/index.js $(PLUGINS_EMS)
 	zip release/index.zip $(DIR)/index.*
 
 $(DIR)/index.js: $(OBJS_EMS) $(PLUGINS_EMS)
-	emcc -o $@ $(OBJS_EMS) $(LIBS_EMS) $(shell cat $(DIR)/deps) --preload-file resauces --preload-file default.vil --preload-file transparent.vil
+	rm -f $(DIR)/index.data
+	emcc --js-opts 0 -g4 -o $@ $(OBJS_EMS) $(LIBS_EMS) $(shell cat $(DIR)/deps) \
+			--preload-file $(DIR)@/resauces \
+			--preload-file $(DIR)/default.vil@default.vil \
+			--preload-file $(DIR)/transparent.vil@transparent.vil \
+			--preload-file $(DIR)/parallax.vil@parallax.vil \
+			--preload-file $(DIR)/decal.vil@decal.vil
 
 %/$(DIR)/export_emscripten.a:
 	$(MAKE) -C $(patsubst %/$(DIR)/export_emscripten.a, %, $@) emscripten PARENTCFLAGS=
