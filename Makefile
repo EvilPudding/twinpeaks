@@ -22,20 +22,20 @@ PLUGINS_EMS = $(patsubst %, %/$(DIR)/export_emscripten.a, $(PLUGINS))
 EMS_OPTS = -s USE_SDL=2 -s ALLOW_MEMORY_GROWTH=1 -s USE_WEBGL2=1 \
 		   -s FULL_ES3=1 -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 		   -s EMULATE_FUNCTION_POINTER_CASTS=1 \
-		   -s WASM=1
+		   -s WASM=1 -s ASSERTIONS=1 -s SAFE_HEAP=1
 
 CFLAGS = -Wall -I. -Icandle -DUSE_VAO -Wno-unused-function \
 		 $(shell sdl2-config --cflags)
 
 CFLAGS_REL = $(CFLAGS) -O3
 
-CFLAGS_EMS = $(CFLAGS) -O3 $(EMS_OPTS)
+CFLAGS_EMS = $(CFLAGS) $(EMS_OPTS) -O3
 
 CFLAGS_DEB = $(CFLAGS) -g3
 
 LIBS_REL = $(LIBS) $(PLUGINS_REL) -pthread
 LIBS_DEB = $(LIBS) $(PLUGINS_DEB) -pthread
-LIBS_EMS = $(LIBS) $(PLUGINS_EMS) $(EMS_OPTS) -O2
+LIBS_EMS = $(LIBS) $(PLUGINS_EMS) $(EMS_OPTS)
 
 ##############################################################################
 
@@ -89,8 +89,8 @@ emscripten: init $(DIR)/index.js $(PLUGINS_EMS)
 
 $(DIR)/index.js: $(OBJS_EMS) $(PLUGINS_EMS)
 	rm -f $(DIR)/index.data
-	emcc --js-opts 0 -g4 -o $@ $(OBJS_EMS) $(LIBS_EMS) $(shell cat $(DIR)/deps) \
-			--preload-file $(DIR)@/resauces \
+	emcc --js-opts 0 -o $@ $(OBJS_EMS) $(LIBS_EMS) $(shell cat $(DIR)/deps) \
+			--preload-file $(DIR)/resauces@resauces \
 			--preload-file $(DIR)/default.vil@default.vil \
 			--preload-file $(DIR)/transparent.vil@transparent.vil \
 			--preload-file $(DIR)/parallax.vil@parallax.vil \
