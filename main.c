@@ -9,7 +9,7 @@
 
 int main(int argc, char **argv)
 {
-	candle_init();
+	candle_init(argv[0]);
 
 	entity_add_component(SYS, (c_t*)c_editmode_new());
 	c_editmode_activate(c_editmode(&SYS));

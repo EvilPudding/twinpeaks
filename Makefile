@@ -89,7 +89,8 @@ emscripten: init $(DIR)/index.js $(PLUGINS_EMS)
 
 $(DIR)/index.js: $(OBJS_EMS) $(PLUGINS_EMS)
 	rm -f $(DIR)/index.data
-	emcc --js-opts 0 -o $@ $(OBJS_EMS) $(LIBS_EMS) $(shell cat $(DIR)/deps) \
+	# --js-opts 0
+	emcc -o $@ $(OBJS_EMS) $(LIBS_EMS) $(shell cat $(DIR)/deps) \
 			--preload-file $(DIR)/resauces@resauces \
 			--preload-file $(DIR)/default.vil@default.vil \
 			--preload-file $(DIR)/transparent.vil@transparent.vil \
