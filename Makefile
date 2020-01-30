@@ -19,9 +19,8 @@ PLUGINS_REL = $(patsubst %, %/$(DIR)/export.a, $(PLUGINS))
 PLUGINS_DEB = $(patsubst %, %/$(DIR)/export_debug.a, $(PLUGINS))
 PLUGINS_EMS = $(patsubst %, %/$(DIR)/export_emscripten.a, $(PLUGINS))
 
-EMS_OPTS = -s USE_SDL=2 -s ALLOW_MEMORY_GROWTH=1 -s USE_WEBGL2=1 \
-		   -s FULL_ES3=1 -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
-		   -s EMULATE_FUNCTION_POINTER_CASTS=1 \
+EMS_OPTS = -s USE_GLFW=3 -s ALLOW_MEMORY_GROWTH=1 -s USE_WEBGL2=1 \
+		   -s FULL_ES3=1 -s EMULATE_FUNCTION_POINTER_CASTS=1 \
 		   -s WASM=1 -s ASSERTIONS=1 -s SAFE_HEAP=1
 
 CFLAGS = -Wall -I. -Icandle -DUSE_VAO -Wno-unused-function \
