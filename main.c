@@ -20,27 +20,22 @@ int main(int argc, char **argv)
 
 	c_sauces_index_dir(c_sauces(&SYS), "resauces");
 
-	mesh_t *cube = sauces("floor");
+	mesh_t *floor = sauces("floor");
 	mesh_t *cloth = sauces("cloth");
+	cloth->smooth_angle = 1.0f;
 
-	entity_new(c_model_new(cube, sauces("tile"), 1, 1));
+	entity_new(c_model_new(floor, sauces("tile"), 1, 1));
 
 	entity_t c0 = entity_new(c_model_new(cloth, sauces("velvet"), 1, 1));
 	entity_t c1 = entity_new(c_model_new(cloth, sauces("velvet"), 1, 1));
 	entity_t c2 = entity_new(c_model_new(cloth, sauces("velvet"), 1, 1));
 	entity_t c3 = entity_new(c_model_new(cloth, sauces("velvet"), 1, 1));
-	c_model_smooth(c_model(&c0), 1);
-	c_model_smooth(c_model(&c1), 1);
-	c_model_smooth(c_model(&c2), 1);
-	c_model_smooth(c_model(&c3), 1);
 
 	mat1f(sauces("tile"), ref("normal.blend"), 0.3f);
 
 	c_spatial_rotate_Y(c_spatial(&c1), M_PI / 2);
 	c_spatial_rotate_Y(c_spatial(&c2), M_PI);
 	c_spatial_rotate_Y(c_spatial(&c3), 3 * M_PI / 2);
-
-	mesh_scale_uv(cube, 10);
 
 	entity_t light = entity_new({
 		c_name_new("light");
