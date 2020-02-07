@@ -5,7 +5,7 @@ PLUGINS = $(wildcard *.candle) candle
 
 DIR = build
 
-LIBS = -Wl,-rpath=$(DIR) -L$(DIR)
+LIBS = -L$(DIR)
 
 SRCS = $(wildcard *.c) $(wildcard components/*.c) $(wildcard systems/*.c)
 
@@ -21,8 +21,8 @@ PLUGINS_EMS = $(patsubst %, %/$(DIR)/export_emscripten.a, $(PLUGINS))
 
 EMS_OPTS = -s USE_GLFW=3 -s ALLOW_MEMORY_GROWTH=1 -s USE_WEBGL2=1 \
 		   -s FULL_ES3=1 -s EMULATE_FUNCTION_POINTER_CASTS=1 \
-		   -s WASM=1 -s ASSERTIONS=1 -s SAFE_HEAP=1 -s USE_PTHREADS=1 \
-		   -s WASM_MEM_MAX=2GB -D_TTHREAD_POSIX_ -D_TTHREAD_PLATFORM_DEFINED_
+		   -s WASM=1 -s ASSERTIONS=1 -s SAFE_HEAP=1 \
+		   -s WASM_MEM_MAX=2GB
 
 CFLAGS = -Wall -I. -Icandle -DUSE_VAO -Wno-unused-function \
 		 $(shell sdl2-config --cflags)

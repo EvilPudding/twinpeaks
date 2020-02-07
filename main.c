@@ -12,6 +12,7 @@ int main(int argc, char **argv)
 	candle_init(argv[0]);
 
 	entity_add_component(SYS, (c_t*)c_editmode_new());
+	entity_add_component(SYS, (c_t*)c_model_new(NULL, NULL, false, false));
 	c_editmode_activate(c_editmode(&SYS));
 
 	c_spatial_t *cam = c_spatial(&c_editmode(&SYS)->camera);
@@ -26,7 +27,7 @@ int main(int argc, char **argv)
 
 	entity_new(c_model_new(floor, sauces("tile"), 1, 1));
 
-	entity_t c0 = entity_new(c_model_new(cloth, sauces("velvet"), 1, 1));
+	entity_new(c_model_new(cloth, sauces("velvet"), 1, 1));
 	entity_t c1 = entity_new(c_model_new(cloth, sauces("velvet"), 1, 1));
 	entity_t c2 = entity_new(c_model_new(cloth, sauces("velvet"), 1, 1));
 	entity_t c3 = entity_new(c_model_new(cloth, sauces("velvet"), 1, 1));
