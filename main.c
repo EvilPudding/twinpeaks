@@ -1,11 +1,8 @@
-#include <candle.h>
-#include <stdio.h>
-#include <components/name.h>
-#include <components/decal.h>
-#include <components/sprite.h>
-#include <components/light.h>
-#include <components/model.h>
-#include <systems/editmode.h>
+#include "candle/candle.h"
+#include "candle/components/name.h"
+#include "candle/components/light.h"
+#include "candle/components/model.h"
+#include "candle/systems/editmode.h"
 
 int main(int argc, char **argv)
 {
@@ -19,7 +16,7 @@ int main(int argc, char **argv)
 	c_spatial_set_pos(cam, vec3(0.0f, 3.0f, 6.0f));
 	c_spatial_rotate_Y(cam, -M_PI / 2.0f);
 
-	c_sauces_index_dir(c_sauces(&SYS), "resauces");
+	/* c_sauces_index_dir(c_sauces(&SYS), "resauces"); */
 
 	mesh_t *floor = sauces("floor");
 	mesh_t *cloth = sauces("cloth");
