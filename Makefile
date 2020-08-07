@@ -7,9 +7,10 @@ debug: main.c
 	make -C candle debug SAUCES=resauces
 	cc -o twinpeaks_debug main.c -g3 `candle/candle-config --debug --libs`
 
-emscripten: index.js main.c
+emscripten: main.c
 	make -C candle emscripten SAUCES=resauces
 	emcc -o index.js main.c `candle/candle-config --emscripten --libs`
+	cp candle/index.html .
 
 clean:
 	make -C candle clean
