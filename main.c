@@ -16,8 +16,6 @@ int main(int argc, char **argv)
 	c_spatial_set_pos(cam, vec3(0.0f, 3.0f, 6.0f));
 	c_spatial_rotate_Y(cam, -M_PI / 2.0f);
 
-	/* c_sauces_index_dir(c_sauces(&SYS), "resauces"); */
-
 	mesh_t *floor = sauces("floor");
 	mesh_t *cloth = sauces("cloth");
 	cloth->smooth_angle = 1.0f;
