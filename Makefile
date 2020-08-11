@@ -9,8 +9,7 @@ debug: main.c
 
 emscripten: main.c
 	make -C candle emscripten SAUCES=resauces
-	emcc -o index.js main.c `candle/candle-config --emscripten --libs`
-	cp candle/index.html .
+	emcc -o index.html main.c `candle/candle-config --emscripten --libs`
 
 clean:
 	make -C candle clean
